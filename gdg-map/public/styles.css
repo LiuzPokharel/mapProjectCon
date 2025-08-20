@@ -1,0 +1,56 @@
+html {
+	cursor: grab; /* Plan to conditionally change to pointer */
+	overflow: hidden;
+}
+
+#canvas {
+	position: absolute;
+	z-index: 0;
+	/*
+	Causes stretching of canvas
+	width: 100vw;
+	height: 100vh;
+	*/
+	top: 0;
+	left: 0;
+}
+
+.hidden-image {
+	z-index: -100;
+	visibility: hidden;
+}
+
+#compass {
+	position: absolute;
+	z-index: 100;
+	background-color: transparent;
+	top: max(5vh, 5vw);
+	left: max(5vh, 5vw);
+	font-size: 20pt;
+}
+
+/* Things like centering and size can be added later */
+#searchbar {
+	position: absolute;
+	z-index: 150;
+	top: 0.5em;
+	margin: auto;
+}
+
+#searchbar-results {
+	color: white;
+	background-color: black;
+}
+
+#searchbar-results p {
+	margin-top: 1px;
+	margin-bottom: 1px;
+	padding-left: 3px;
+	border: 1px solid #ccc;
+	transition: background-color 0.2s, color 0.2s;
+}
+
+#searchbar-results p:hover {
+	color: black;
+	background-color: white;
+}
