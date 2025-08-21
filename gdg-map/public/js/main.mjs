@@ -95,8 +95,13 @@ $(window).on("click", function (event) {
 
 //Graph of the nodes
 const graph = {
-	"Admin": {"cob2": 650, "cob1": 760, "bsp": 380, "acs": 300}
-};
+	"Admin": {"t1": 90},
+	"t1": {"Admin": 90, "t2": 150},
+	"t2": {"t1": 150, "t3": 220},
+	"t3": {"t2": 220, "t4": 240},
+	"t4": {"t3": 240, "COB2": 90, "COB1": 100},
+	"COB2": {"t4": 90}
+	};
 
 //Dijkstra's algorithm
 function dijkstra(graph, start, end){
