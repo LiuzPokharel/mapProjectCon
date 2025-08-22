@@ -41,4 +41,27 @@ function addSearchbarListeners(camera) {
 	});
 }
 
+function addRouteSearch(graph){
+	$("#route-submit").on("click", function(){
+		let start = $("#start-search").val().trim();
+		let end = $("#end-search").val().trim(); 
+
+		if (!graph[start] || !graph[end]){
+			alert("Invalid building or name. Please try again.");
+			return; 
+		}
+
+		let result = dijkstra(graph, start, end);
+		$("#output").text(
+			`Shortest path: ${result.path.join(" -> ")} (Distance: ${result.distance})`
+		);
+	});
+
+	$("#start-search, #end-search").on("keyup", function (event) {
+		if (event.key === "Enter") {
+			$("#route-submit").click();
+		}
+	});
+}
+
 export { addSearchbarListeners };

@@ -95,8 +95,8 @@ $(window).on("click", function (event) {
 
 //Graph of the nodes
 const graph = {
-	"Admin": {"t1": 90, "t5": 220},
-	"t1": {"Admin": 90, "t2": 150},
+	"admin": {"t1": 90, "t5": 220},
+	"t1": {"admin": 90, "t2": 150},
 	"t2": {"t1": 150, "t3": 220},
 	"t3": {"t2": 220, "t6": 60, "t5": 175},
 	"t4": {"t6": 180, "COB2": 90, "cob1": 100},
