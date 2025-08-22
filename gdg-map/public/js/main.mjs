@@ -95,12 +95,21 @@ $(window).on("click", function (event) {
 
 //Graph of the nodes
 const graph = {
-	"Admin": {"t1": 90},
+	"Admin": {"t1": 90, "t5": 220},
 	"t1": {"Admin": 90, "t2": 150},
 	"t2": {"t1": 150, "t3": 220},
-	"t3": {"t2": 220, "t4": 240},
-	"t4": {"t3": 240, "COB2": 90, "COB1": 100},
-	"COB2": {"t4": 90}
+	"t3": {"t2": 220, "t6": 60, "t5": 175},
+	"t4": {"t6": 180, "COB2": 90, "cob1": 100},
+	"cob1": {"t4": 100, "se1": 90},
+	"COB2": {"t4": 90},
+	"t5": {"admin": 220, "t3": 175, "acs": 60},
+	"acs": {"t5": 60, "sre": 70, "t6": 175},
+	"t6": {"t3": 60, "acs": 175, "t4": 180},
+	"sre": {"bsp": 40, "t7": 150},
+	"bsp": {"sre": 40},
+	"t7": {"sre": 150, "se1": 120, "se2": 45},
+	"se1": {"t7": 120, "cob1": 90, "se2": 65},
+	"se2": {"t7": 45, "se1": 65},
 	};
 
 //Dijkstra's algorithm
@@ -123,7 +132,7 @@ function dijkstra(graph, start, end){
 			}
 		}
 	}
-	return {distance: Infinity, path: [] };
+	return {distance: "N/A", path: [] };
 }
 
 function findRoute(start, end){
