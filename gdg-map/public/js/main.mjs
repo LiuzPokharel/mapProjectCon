@@ -6,7 +6,7 @@ import { Equirectangular, SphereMercator } from "./cartography.mjs";
 import { addSearchbarListeners } from "./searchbar.mjs";
 import { setupAutofill } from "./autofill.mjs";
 import { roomData, buildingCoords } from "./features.mjs";
-
+//space added 
 const ctx = $("#canvas")[0].getContext("2d");
 const camera = new Camera(ctx);
 
@@ -109,7 +109,7 @@ const graph = {
 	"bsp": {"sre": 40},
 	"t7": {"sre": 150, "se1": 120, "se2": 45},
 	"se1": {"t7": 120, "cob1": 90, "se2": 65},
-	"se2": {"t7": 45, "se1": 65},
+	"se2": {"t7": 45, "se1": 60},
 	};
 
 //Dijkstra's algorithm
