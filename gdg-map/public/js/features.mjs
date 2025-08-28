@@ -44,7 +44,9 @@ export const buildingCoords = {
 	cob2: [ 674.8995737784484, 1921.3639670857553],
 	cob1: [ 675, 1765 ],
 	acs: [ 1240, 1840 ],
-	bsp: [ 1080, 1890]
+	bsp: [ 1100, 1750 ],
+	se1: [ 780, 1605 ],
+	se2: [ 900, 1530 ]
 }
 
 window.roomData = roomData;
