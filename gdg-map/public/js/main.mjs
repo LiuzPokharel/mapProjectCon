@@ -3,7 +3,7 @@
 
 import { Camera, addCameraListeners, mergeLeft } from "./camera.mjs";
 import { Equirectangular, SphereMercator } from "./cartography.mjs";
-import { addSearchbarListeners } from "./searchbar.mjs";
+import { addSearchbarListeners, addRouteSearch } from "./searchbar.mjs";
 import { setupAutofill } from "./autofill.mjs";
 import { roomData, buildingCoords } from "./features.mjs";
 //space added 

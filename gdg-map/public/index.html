@@ -16,9 +16,14 @@
 			<div>
 				<input id="searchbar-data">
 				<button id="searchbar-submit">Go!</button>
-				<button id="routeButton" onclick="findRoute('admin','cob2')">Route: Admin -> cob2</button>
-				<p id="output"></p>
 				<script type="module" src="main.mjs"></script>
+			</div>
+			<div id="route-search">
+				<input id="start-search" placeholder="Starting Point">
+				<input id="end-search" placeholder="Destination">
+				<button id="route-submit" onclick="findRoute(document.getElementById('start-search').value, document.getElementById('end-search').value)">Find Route</button>				
+			</div>
+				<p id="output"></p>
 			</div>
 			<div id="searchbar-results">
 				<p hidden="" data-alt="AOA">Academic Office Annex</p>

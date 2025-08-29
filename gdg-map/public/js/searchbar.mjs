@@ -64,4 +64,4 @@ function addRouteSearch(graph){
 	});
 }
 
-export { addSearchbarListeners };
+export { addSearchbarListeners, addRouteSearch };
