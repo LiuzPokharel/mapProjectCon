@@ -29,28 +29,78 @@ html {
 	font-size: 20pt;
 }
 
-/* Things like centering and size can be added later */
 #searchbar {
-	position: absolute;
-	z-index: 150;
-	top: 0.5em;
-	margin: auto;
+    position: absolute;
+    z-index: 150;
+    top: 1em;
+    left: 1em;   /* moved to left */
+    transform: none; /* remove centering */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* align items to left */
+    gap: 0.5em;
+    background: rgba(0,0,0,0.6);
+    padding: 1em;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+#searchbar input {
+    padding: 0.5em 0.8em;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    width: 220px;
+    font-size: 14px;
+}
+
+#searchbar button {
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #4CAF50;
+    color: white;
+    font-weight: bold;
+    transition: background 0.2s, transform 0.1s;
+}
+
+#searchbar button:hover {
+    background: #45a049;
+    transform: scale(1.05);
+}
+
+#searchbar button:active {
+    transform: scale(0.95);
+}
+
+#route-search {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
 }
 
 #searchbar-results {
-	color: white;
-	background-color: black;
+    color: black;
+    background: white;
+    border-radius: 8px;
+    margin-top: 0.5em;
+    max-height: 150px;
+    overflow-y: auto;
+    width: 220px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 #searchbar-results p {
-	margin-top: 1px;
-	margin-bottom: 1px;
-	padding-left: 3px;
-	border: 1px solid #ccc;
-	transition: background-color 0.2s, color 0.2s;
+    margin: 0;
+    padding: 6px 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background 0.2s;
 }
 
 #searchbar-results p:hover {
-	color: black;
-	background-color: white;
+    background: #f0f0f0;
 }
