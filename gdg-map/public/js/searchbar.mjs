@@ -7,8 +7,9 @@ let tempFeatures = {
 	"Classroom Office Building 2": { x: 674.8995737784484, y: 1921.3639670857553 },
 	"Classroom Office Building 1": {x: 675, y: 1765},
 	"Arts and Computational Sciences Building": {x: 1240, y: 1840 },
-	"Biomedical Sciences and Physics Building": {x: 1080, y: 1890}
-
+	"Biomedical Sciences and Physics Building": {x: 1080, y: 1890},
+	"Pavillion": {x: 1200, y: 1950},
+	"Sustainability Research & Engineering Building": {x: 1075, y: 1890 }
 }
 
 function focusOn(camera, feature) {
