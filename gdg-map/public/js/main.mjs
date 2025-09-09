@@ -33,6 +33,75 @@ const bigTextStyle = {
 	font: "50px Arial",
 	textAlign: "center"
 };
+
+let currentRoute = null; 
+
+//This keeps the width consistent while zooming
+function px(n){
+	return n / (camera.affine?.scaleFactor || 1);
+}
+
+function drawRoutePath(path){
+	if (!path || path.length < 2){
+		return; 
+	}
+
+	//This ensures we have coordinates for all nodes on the path
+	for (const node of path){
+		if(!nodeCoords[node]){
+			return; 
+		}
+	}
+
+	ctx.save();
+  	ctx.setLineDash([]);
+  	ctx.globalAlpha = 1;
+
+  	ctx.lineWidth = Math.max(3, px(8));
+  	ctx.strokeStyle = "#28a745";
+  	ctx.lineJoin = "round";
+  	ctx.lineCap = "round";
+
+	ctx.beginPath(); 
+	const p0 = nodeCoords[path[0]];
+	ctx.moveTo(p0.x, p0.y);
+	for ( let i = 1; i < path.length; i++){
+		const p = nodeCoords[path[i]];
+		ctx.lineTo(p.x, p.y);
+	}
+	ctx.stroke(); 
+
+	const rMid = Math.max(3, px(6));
+  	ctx.fillStyle = "#28a745";
+  	ctx.strokeStyle = "#ffffff";
+  	ctx.lineWidth = Math.max(1, px(2));
+
+  	for (let i = 1; i < path.length - 1; i++) {
+    	const p = nodeCoords[path[i]];
+    	ctx.beginPath();
+    	ctx.arc(p.x, p.y, rMid, 0, Math.PI * 2);
+    	ctx.fill();
+    	ctx.stroke();
+  	}
+
+	//Start/end markers
+	const rEnd = Math.max(6, px(10));
+	ctx.fillStyle = "#ffffff";
+	ctx.strokeStyle = "#28a745";
+	ctx.lineWidth = Math.max(2, px(2));
+
+	const endpoints = [path[0], path[path.length - 1]];
+	for ( const node of endpoints){
+		const p = nodeCoords[node];
+		ctx.beginPath();
+		ctx.arc(p.x, p.y, rEnd, 0, Math.PI * 2);
+		ctx.fill(); 
+		ctx.stroke();
+	}
+
+	ctx.restore();
+}
+
 function draw() {
 	ctx.resetTransform();
 	ctx.fillStyle = "white";
@@ -41,6 +110,10 @@ function draw() {
 	camera.refreshTransform();
 	// TODO Move the logic for this call to camera for abstraction
 	ctx.drawImage($("#background-map")[0], 0, 0);
+	
+	drawRoutePath(currentRoute);
+
+
 	// Feel free to experiment by adding some canvas draw calls here
 	// Here, I use the mercator object to convert my latitude and longitude
 	// into a format that ctx can understand
@@ -112,6 +185,26 @@ const graph = {
 	"se2": {"t7": 45, "se1": 65},
 	};
 
+const nodeCoords = {
+	admin: { x: 1503, y: 2193 },
+	cob2: { x: 685, y: 1894 },
+	cob1: { x: 703, y: 1738 },
+	acs: { x: 1229, y: 1864 },
+	bsp: { x: 1124, y: 1775 },
+	se1: { x: 798, y: 1633 },
+	se2: { x: 875, y: 1558 },
+	pav: { x: 1272, y: 1937 },
+	sre: { x: 1060, y: 1821},
+	t1: { x: 1562, y: 2370 },
+	t2: { x: 1314, y: 2368 },
+	t3: { x: 1081, y: 2121 },
+	t4: { x: 804, y: 1816 },
+	t5: { x: 1280, y: 1940 },
+	t6: { x: 1023, y: 2054 },
+	t7: { x: 940, y: 1638 },
+
+}
+
 //Dijkstra's algorithm
 function dijkstra(graph, start, end){
 	let pq = [[0, start, []]];
@@ -136,9 +229,30 @@ function dijkstra(graph, start, end){
 }
 
 function findRoute(start, end){
-	let result = dijkstra(graph, start, end);
+
+	const alias = {
+		"Administration Building": "admin",
+    	"Classroom Office Building 1": "cob1",
+    	"Classroom Office Building 2": "cob2",
+    	"Arts and Computational Sciences Building": "acs",
+    	"Biomedical Sciences and Physics Building": "bsp",
+		"Pavillion": "pav",
+		"Sustainability Research & Engineering Building": "sre",
+	};
+
+	const s = alias[start] || start; 
+	const e = alias[end] || end; 
+
+	const result = dijkstra(graph, s, e);
+	currentRoute = result.path && result.path.length ? result.path : null;
+
 	document.getElementById("output").innerText = 
-		`Shortest path: ${result.path.join(" -> ")} (Distance: ${result.distance})`;
+	    result.path.length
+			? `Shortest path: ${result.path.join(" -> ")} (Distance: ${result.distance})`
+			: `No route found from "${start}" to "${end}".`;
+
+	draw(); 
+
 }
 
 window.findRoute = findRoute; 
