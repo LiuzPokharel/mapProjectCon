@@ -109,7 +109,10 @@ function draw() {
 	ctx.fillRect(0, 0, 2 * document.body.offsetWidth, 2 * document.body.offsetHeight);
 	camera.refreshTransform();
 	// TODO Move the logic for this call to camera for abstraction
-	ctx.drawImage($("#background-map")[0], 0, 0);
+	camera.refreshTransform(); 
+
+	const bg = $("#background-map")[0];
+	ctx.drawImage(bg, 0, 0, bg.width, bg.height);
 	
 	drawRoutePath(currentRoute);
 
@@ -256,3 +259,76 @@ function findRoute(start, end){
 }
 
 window.findRoute = findRoute; 
+
+const MIN_ZOOM = 0.4;
+const MAX_ZOOM = 6.0; 
+
+function setZoom(newScale){
+	camera.affine.scaleFactor = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newScale));
+	draw(); 
+}
+
+function zoomBy(factor){
+	setZoom(camera.affine.scaleFactor * factor);
+}
+
+// jQuery delegated listeners (safe even if elements are added later)
+$(document).on("click", "#zoom-in",  () => zoomBy(1.2));
+$(document).on("click", "#zoom-out", () => zoomBy(1/1.2));
+
+
+$("#canvas").on("wheel", (e) => {
+	e.preventDefault(); 
+	const delta = e.originalEvent.deltaY;
+	const factor = delta > 0 ? 1/1.1 : 1.1;
+
+	const rect = e.currentTarget.getBoundingClientRect(); 
+	const sx = e.originalEvent.clientX - rect.left; 
+	const sy = e.originalEvent.clientY - rect.top; 
+	const [wx, wy] = camera.screenToWorld(sx, sy);
+
+	const prev = camera.affine.scaleFactor; 
+	const next = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, prev * factor));
+	camera.affine.scaleFactor = next; 
+
+	camera.setCenterOn(wx, wy);
+	draw(); 
+}, { passive: false}); 
+
+const hamm = new Hammer.Manager(document.getElementById("canvas"));
+hamm.add(new Hammer.pinch({ enable: true }));
+
+let pinchStartScale = camera.affine.scaleFactor; 
+hamm.on("pinchstart", () => { pinchStartScale = camera.affine.scaleFactor; });
+hamm.on("pinchmove", (ev) => {
+	setZoom(pinchStartScale * ev.scale);
+});
+
+function fitRoute(padding = 80){
+	if (!currentRoute || currentRoute.length < 2) return; 
+
+	let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+	for (const node of currentRoute){
+		const p = nodeCoords[node];
+		if (!p) return; 
+		minX = Math.min(minX, p.x); minY = Math.min(minY, p.y);
+		maxX = Math.max(maxX, p.x); maxY = Math.max(maxY, p.y);
+	}
+
+	const w = maxX - minX, h = maxY - minY;
+	const cx = minX + w / 2, cy = minY + h / 2;
+
+	const vw = ctx.canvas.width - padding*2; 
+	const vh = ctx.canvas.height - padding*2;
+	if (vw <= 0 || vh <= 0) return; 
+
+	const sx = vw / Math.max(w, 1);
+	const sy = vh / Math.max(h, 1);
+	const targetScale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Math.min(sx, sy)));
+
+	camera.affine.scaleFactor = targetScale; 
+	camera.setCenterOn(cx, cy);
+	draw(); 
+}
+
+$("#zoom-fit").on("click", fitRoute);

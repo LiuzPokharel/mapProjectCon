@@ -104,3 +104,16 @@ html {
 #searchbar-results p:hover {
     background: #f0f0f0;
 }
+
+#zoom-controls{
+    display: flex; gap: .4em; margin-top: .4em; 
+}
+
+#zoom-controls button{
+    padding: .4em .6em; border: none; border-radius: 8px; 
+    background: #28a745; color: #fff; font-weight: 700; cursor: pointer; 
+}
+
+#zoom-controls button:hover {
+    background: #218838; 
+}
